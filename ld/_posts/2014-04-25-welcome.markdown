@@ -1,0 +1,19 @@
+---
+layout: post
+title:  Beneath the Surface
+date:   2014-04-25 17:58:25
+categories: jekyll update
+---
+
+
+Hello LD!
+
+I've been vaguely planning a 3d game set in a very sparse, "large" world for the past week.  I want to explore three main things:
+
+ - how to create a sense of scale
+ - the movement possibilities from jumping between free-floating objects
+ - building more structure (adding movement possibilities) as you go along
+
+I've also, separately, been intending to build a tool for exploring [inversive
+geometry](http://en.wikipedia.org/wiki/Inversive_geometry)... hopefully I will
+come up with a compelling way to explore what's "beneath the surface."
