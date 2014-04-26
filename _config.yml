@@ -1,3 +1,4 @@
 name: Ludum Dare 29
 markdown: redcarpet
 pygments: true
+baseurl: /ld29
