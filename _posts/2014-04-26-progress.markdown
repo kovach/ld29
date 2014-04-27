@@ -1,0 +1,32 @@
+---
+layout: post
+title:  Movement
+date:   2014-04-26 20:03:32
+categories: jekyll update
+---
+
+
+Slow progress
+
+ - Last night, learned the basics of quaternion rotations and made a simple animation hook
+ - Today, learned some finer points of rotation and added some basic camera movement.
+ - Made use of three.js's projection/raytracing classes to support interaction with objects:
+{% highlight javascript %}
+  // mouse x, y, normalized by screen dimensions
+  var vector = v(x, y, 1);
+  projector.unprojectVector(vector, camera);
+  var origin = camera.position;
+  var ray = new THREE.Raycaster(origin,
+      vector.sub(origin).normalize());
+  // pass the list of meshes to test
+  var objs = ray.intersectObjects(blob_objects);
+{% endhighlight %}
+
+The current version of the game will always be [here]({{site.baseurl}}/game.html).
+
+Controls:
+
+ - `left-click` to orient the camera and select an object, then `w` to move to it.
+ - `right-click` to orient and move simultaneously
+ - `e` to turn around 180 degrees
+ - `a` and `d` to roll around the camera axis
