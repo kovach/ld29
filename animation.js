@@ -71,33 +71,6 @@ registerSlerp = function(obj, target, duration, tparam) {
       });
 }
 
-//registerLook = function(v) {
-//  var q1 = new THREE.Quaternion();
-//  var q2 = new THREE.Quaternion();
-//
-//  var m1 = new THREE.Matrix4();
-//
-//  // Start
-//  q1.copy(camera.quaternion);
-//  m1.lookAt(camera.position, v, camera.up);
-//  // End
-//  q2.setFromRotationMatrix(m1);
-//
-//  update = function(state, t) {
-//    THREE.Quaternion.slerp(q1, q2, state, t);
-//    camera.quaternion.copy(state);
-//    updateUp();
-//    //console.log(t);
-//  }
-//
-//  registerAnimation(
-//      { type : 'camera'
-//      , duration : 200
-//      , state : new THREE.Quaternion()
-//      , update : update
-//      });
-//}
-
 registerLook = function(v) {
   var q2 = new THREE.Quaternion();
   var m1 = new THREE.Matrix4();
@@ -107,33 +80,6 @@ registerLook = function(v) {
   registerSlerp(camera, q2, 200, id);
 }
 
-
-//registerRoll = function(delta) {
-//  var q1 = new THREE.Quaternion();
-//  var q2 = new THREE.Quaternion();
-//
-//  var r = new THREE.Euler();
-//
-//  // Start
-//  q1.copy(camera.quaternion);
-//  // End
-//  r.copy(camera.rotation);
-//  r.z += delta;
-//  q2.setFromEuler(r);
-//
-//  update = function(state, t) {
-//    THREE.Quaternion.slerp(q1, q2, state, Math.sqrt(t));
-//    camera.quaternion.copy(state);
-//    updateUp();
-//  }
-//
-//  registerAnimation(
-//      { type : 'camera'
-//      , duration : 1400
-//      , state : new THREE.Quaternion()
-//      , update : update
-//      });
-//}
 registerRoll = function(delta) {
   var q2 = new THREE.Quaternion();
   var r = camera.rotation.clone();
@@ -144,15 +90,11 @@ registerRoll = function(delta) {
 }
 
 
-
-registerTranslation = function(dest) {
+registerTranslation = function(delta) {
   var start = camera.position.clone();
-  console.log(dest);
-  // Make into a delta
-  //dest.sub(start);
 
   update = function(state, t) {
-    var d = dest.clone();
+    var d = delta.clone();
     d.multiplyScalar(t);
     camera.position.addVectors(start, d);
   }
@@ -164,7 +106,6 @@ registerTranslation = function(dest) {
       , update : update
       });
 }
-
 
 registerTurn = function() {
   dest = camera.quaternion.clone();

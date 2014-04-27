@@ -17,16 +17,8 @@ updateIntersections = function(x, y) {
   var objs = ray.intersectObjects(blob_objects);
   // Hit a blob
   if (objs.length > 0) {
-
-    var hit = objs[0];
-
-    World.updateFocus(hit);
-
+    World.setFocus(objs[0].object);
   } else {
-    // Reset old target color
-    if (World.focus) {
-      World.focus.material.color.set(World.blobColor);
-    }
     World.unfocus();
   }
 

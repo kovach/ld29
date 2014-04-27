@@ -1,6 +1,10 @@
 // TODO
 //
 // INVERSION??
+// fix focus/target
+// write simple interpolation formula
+// inversion across target
+// reflect self across sphere?
 
 
 var initGL = function(initFn, renderFn) {

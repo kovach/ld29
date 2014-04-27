@@ -94,12 +94,11 @@ clickHandler = function(ev) {
   var y = ev.y;
 
   if (World.focus) {
-    var id = World.focus._id;
+    var id = World.focus;
     var mobj = lookup(blob_objects, id);
     if (mobj) {
-      World.setTarget(id);
+      World.setTarget(mobj);
       registerLook(mobj.position);
-      console.log(ev);
       if (ev.button == 2) {
         World.move();
       }
