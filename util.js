@@ -15,3 +15,8 @@ randInt = function(max) {
 }
 id = function(x) { return x; }
 
+scaleObject = function(obj, s) {
+  obj.scale.x = s;
+  obj.scale.y = s;
+  obj.scale.z = s;
+}

@@ -1,10 +1,10 @@
 // TODO
 //
 // INVERSION??
-// fix focus/target
 // write simple interpolation formula
 // inversion across target
 // reflect self across sphere?
+// nested sphere structure
 
 
 var initGL = function(initFn, renderFn) {
@@ -32,7 +32,7 @@ var initGL = function(initFn, renderFn) {
 
 
 
-blobs = _.map(_.range(100), World.makeBlob);
+blobs = _.map(_.range(150), World.makeBlob);
 blob_objects = [];
 lights = _.map(_.range(7), function() { return World.randPoint(3); });
 
@@ -46,9 +46,10 @@ geometries = _.map(_.range(5), function(i) {
 makeBlob = function (b) {
   //var geometry = new THREE.SphereGeometry(b.radius, 40, 40);
   var geometry = geometries[randInt(geometries.length)];
-  b.radius = geometry.radius;
   var material = new THREE.MeshLambertMaterial({ color: World.blobColor });
   var s = new THREE.Mesh(geometry.geometry, material);
+  b.radius = geometry.radius;
+  s.radius = geometry.radius;
 
   s.position.copy(b.position);
   s._id = _.uniqueId();
@@ -78,7 +79,9 @@ init = function(scene, camera, renderer) {
   _.each(blobs, makeBlob);
   _.each(lights, makeLight);
 
-  //makeArrow();
+  // for testing
+  b0 = blob_objects[0];
+
 }
 
 var render = function() {

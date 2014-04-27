@@ -17,7 +17,7 @@ World.blobColor = World.attrColors['none'];
 World.attrMap = {};
 
 World.setAttrDumb = function(id, attr) {
-  console.log('set-attr: ', attr);
+  //console.log('set-attr: ', attr);
   World.attrMap[id] = attr;
   World.lookupObj(id).material.color.set(World.attrColors[attr]);
 }
@@ -87,9 +87,13 @@ World.setTarget = function(object) {
 World.lookupObj = function(id) {
   return lookup(blob_objects, id);
 }
-World.lookup = function(id) {
-  return lookup(blobs, id);
+World.getTarget = function() {
+  return World.lookupObj(World.target);
 }
+
+//World.lookup = function(id) {
+//  return lookup(blobs, id);
+//}
 
 World.move = function() {
   var target = World.target;
@@ -98,7 +102,7 @@ World.move = function() {
     var dest = obj.position.clone();
     dest.sub(camera.position);
     var len = dest.length();
-    dest.multiplyScalar((len - World.lookup(target).radius*2) / len);
+    dest.multiplyScalar((len - obj.radius*2) / len);
     registerTranslation(dest);
   } else {
     console.log('no target!');

@@ -57,26 +57,26 @@ keyHandle = function(key) {
     case 'e':
       registerTurn();
       break;
+    case 'r':
+      registerInversion();
+      break;
+    case 'f':
+      //registerScale();
+      break;
     case 's':
-      //camera.rotation.x -= 0.1;
       break;
     case 'a':
-      registerRoll(1.5);
-      //camera.rotation.z += 0.1;
-      //updateUp();
-      //console.log('up: ', camera.up);
+      registerRoll(1.1);
       break;
     case 'd':
-      registerRoll(-1.5);
-      //camera.rotation.z -= 0.1;
-      //updateUp();
-      //console.log('up: ', camera.up);
+      registerRoll(-1.1);
       break;
     case 'j':
-      registerLook(vec(blobs[0]));
+      World.setTarget(b0);
+      registerLook(b0.position);
+      //World.move();
       break;
     case 'k':
-      registerLook(vec(blobs[1]));
       break;
     default:
       break;
@@ -102,6 +102,7 @@ clickHandler = function(ev) {
       if (ev.button == 2) {
         World.move();
       }
+      console.log('click: ', mobj);
     } else {
       console.log('ERROR');
     }

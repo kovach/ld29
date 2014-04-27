@@ -86,9 +86,17 @@ registerRoll = function(delta) {
   r.z += delta;
   q2.setFromEuler(r);
 
-  registerSlerp(camera, q2, 1000, Math.sqrt);
+  registerSlerp(camera, q2, 800, Math.sqrt);
 }
 
+registerTurn = function() {
+  dest = camera.quaternion.clone();
+  rot = new THREE.Quaternion();
+  rot.setFromAxisAngle(v(0,1,0), Math.PI);
+  dest.multiply(rot);
+
+  registerSlerp(camera, dest, 300, id);
+}
 
 registerTranslation = function(delta) {
   var start = camera.position.clone();
@@ -107,11 +115,66 @@ registerTranslation = function(delta) {
       });
 }
 
-registerTurn = function() {
-  dest = camera.quaternion.clone();
-  rot = new THREE.Quaternion();
-  rot.setFromAxisAngle(v(0,1,0), Math.PI);
-  dest.multiply(rot);
+registerInversion = function() {
 
-  registerSlerp(camera, dest, 600, id);
+  if (!(World.target)) {
+    console.log('no target!');
+    return;
+  }
+
+  var target = World.getTarget();
+  var c0 = target.position.clone();
+  var r0 = target.radius;
+  console.log('c: ', c0);
+  console.log('r: ', r0);
+
+  //c0 = v(0,0,0);
+  //r0 = 1;
+
+  var init = _.map(blob_objects, function(obj, ind) {
+    // Assume uniform scaling
+    return { c : obj.position.clone(), r : obj.radius, s : obj.scale.x };
+  });
+
+  var update = function(state, t) {
+    _.each(blob_objects, function(obj, ind) {
+      var c1 = init[ind].c;
+      var r1 = init[ind].r;
+      var s1 = init[ind].s;
+      var sphere = invertSphere(c1, r1, c0, r0, t);
+
+      obj.position.copy(sphere.center);
+      var scale = Math.max(s1 * sphere.radius / r1, 0.01);
+      scaleObject(obj, scale);
+      obj.radius = sphere.radius;
+    });
+    //console.log('b0r: ', b0.radius);
+  }
+
+  registerAnimation(
+    { type : 'world'
+    , duration : 4000
+    , state : undefined
+    , update : update
+    });
+}
+
+registerScale = function() {
+  if (World.target) {
+    obj = World.lookupObj(World.target);
+    update = function(state, t) {
+      t = t * 2;
+      obj.scale.x = t;
+      obj.scale.y = t;
+      obj.scale.z = t;
+    }
+    registerAnimation(
+      { type : 'display'
+      , duration : 1000
+      , state : undefined
+      , update : update
+      });
+  } else {
+    console.log('no target!');
+  }
 }
