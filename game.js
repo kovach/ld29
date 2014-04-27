@@ -34,7 +34,7 @@ var initGL = function(initFn, renderFn) {
 
 blobs = _.map(_.range(150), World.makeBlob);
 blob_objects = [];
-lights = _.map(_.range(7), function() { return World.randPoint(3); });
+lights = _.map(_.range(10), function() { return World.randPoint(3); });
 
 geometries = _.map(_.range(5), function(i) {
   var radius = 0.1 + i / 5 * 1.2;
@@ -42,14 +42,20 @@ geometries = _.map(_.range(5), function(i) {
          , geometry : new THREE.SphereGeometry(radius, 40, 40)
          };
 });
-
+unitSphere = { geometry : new THREE.SphereGeometry(1, 40, 40)
+             , radius : 1 };
 makeBlob = function (b) {
   //var geometry = new THREE.SphereGeometry(b.radius, 40, 40);
-  var geometry = geometries[randInt(geometries.length)];
-  var material = new THREE.MeshLambertMaterial({ color: World.blobColor });
-  var s = new THREE.Mesh(geometry.geometry, material);
-  b.radius = geometry.radius;
-  s.radius = geometry.radius;
+  //var pair = geometries[randInt(geometries.length)];
+  var pair = unitSphere
+  var geometry = pair.geometry;
+  var radius = pair.radius;
+  var options = { color: World.blobColor, transparent : true }
+  var material = new THREE.MeshLambertMaterial(options);
+  var s = new THREE.Mesh(geometry, material);
+  b.radius = radius
+  s.radius = radius
+  s.initRadius = radius
 
   s.position.copy(b.position);
   s._id = _.uniqueId();
@@ -69,9 +75,15 @@ makeArrow = function() {
   arrow = new THREE.ArrowHelper(v(1,0,0), arr_origin, 7, 0xff0000);
   scene.add(arrow);
 }
+makeInversionSphere = function() {
+  var geometry = new THREE.SphereGeometry(World.is.r0, 40, 40);
+  var options = { color: 0xff0000, transparent : true, opacity : 0.5};
+  var material = new THREE.MeshLambertMaterial(options);
+  var s = new THREE.Mesh(geometry, material);
+  s.position.copy(World.is.c0);
+  scene.add(s);
+}
 
-
-   
 
 // Make the spheres
 init = function(scene, camera, renderer) {
@@ -81,6 +93,9 @@ init = function(scene, camera, renderer) {
 
   // for testing
   b0 = blob_objects[0];
+
+  // show inversion sphere
+  // makeInversionSphere();
 
 }
 

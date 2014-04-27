@@ -1,5 +1,5 @@
 camera_animation = undefined;
-animations = [];
+animations = {};
 
 // Util
 normalizeTime = function(animation) {
@@ -18,26 +18,28 @@ updateAnimation = function(a) {
   }
 }
 updateAnimations = function() {
-  animations = _.filter(animations, updateAnimation);
-  camera_animation = _.filter(camera_animation, updateAnimation);
+  _.each(animations, function(arr, key) {
+    animations[key] = _.filter(arr, updateAnimation);
+  });
+}
 
 // Register
 registerAnimation = function(spec) {
   var start = new Date().getTime();
   spec.start = start;
-  switch (spec.type) {
-    case 'camera':
-      if (camera_animation.length === 0) {
-        camera_animation.push(spec);
-      }
-      break;
-    default:
-      animations.push(spec);
-      break;
+  var type = spec.type;
+  //console.log(spec);
+
+  if (!animations[type]) {
+    animations[type] = [];
+  }
+  if (animations[type].length === 0) {
+    animations[type].push(spec);
+  } else {
+    console.log('please wait');
   }
 }
 
-}
 
 // Animation types
 registerTest = function() {
@@ -128,32 +130,32 @@ registerInversion = function() {
   console.log('c: ', c0);
   console.log('r: ', r0);
 
-  //c0 = v(0,0,0);
-  //r0 = 1;
+  var root = false;
+  if (root) {
+    c0 = World.is.c0;
+    r0 = World.is.r0;
+  }
 
   var init = _.map(blob_objects, function(obj, ind) {
     // Assume uniform scaling
-    return { c : obj.position.clone(), r : obj.radius, s : obj.scale.x };
+    return { c : obj.position.clone(), r : obj.radius, r0 : obj.initRadius };
   });
 
   var update = function(state, t) {
     _.each(blob_objects, function(obj, ind) {
-      var c1 = init[ind].c;
-      var r1 = init[ind].r;
-      var s1 = init[ind].s;
-      var sphere = invertSphere(c1, r1, c0, r0, t);
+      var params = init[ind];
+      var sphere = invertSphere(params.c, params.r, c0, r0, t);
 
       obj.position.copy(sphere.center);
-      var scale = Math.max(s1 * sphere.radius / r1, 0.01);
-      scaleObject(obj, scale);
       obj.radius = sphere.radius;
+      var scale = Math.max(sphere.radius / params.r0, 0.01);
+      scaleObject(obj, scale);
     });
-    //console.log('b0r: ', b0.radius);
   }
 
   registerAnimation(
     { type : 'world'
-    , duration : 4000
+    , duration : 1000
     , state : undefined
     , update : update
     });

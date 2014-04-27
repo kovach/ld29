@@ -27,7 +27,7 @@ invertSphere = function(c1, r1, c0, r0, t) {
   var center = c1.clone();
   center.sub(c0);
   var r = center.clone().normalize();
-  if (r.length() < 1) {
+  if (r.length() < 0.01) {
     r = v(1, 0, 0);
   }
   r.multiplyScalar(r1);
@@ -49,7 +49,7 @@ invertSphere = function(c1, r1, c0, r0, t) {
   d2.multiplyScalar(r0 * Math.pow(len2/r0, 1-2*t) / len2);
   //console.log('d2: ', d2);
 
-  var center = d1.clone().add(d2).multiplyScalar(1/2);
+  var center = d1.clone().add(d2).multiplyScalar(1/2).add(c0);
   var radius = d1.clone().sub(d2).multiplyScalar(1/2).length();
 
   return { center : center, radius : radius };

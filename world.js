@@ -5,7 +5,14 @@ World.target = undefined;
 //World.targetColor = ;
 World.blobRadius = 1;
 
+World.is = { c0 : v(0,0,0), r0 : 3 };
+
 World.attrs = { target : 2, focus : 1, none : 0 };
+World.attrOpacities =
+  { target : 0.5
+  , focus : 1
+  , none : 1
+  };
 World.attrColors =
   { target : 0xffcc66
   , focus : 0x66ccff
@@ -20,6 +27,7 @@ World.setAttrDumb = function(id, attr) {
   //console.log('set-attr: ', attr);
   World.attrMap[id] = attr;
   World.lookupObj(id).material.color.set(World.attrColors[attr]);
+  World.lookupObj(id).material.opacity = World.attrOpacities[attr];
 }
 World.setAttr = function(id, attr) {
   if (World.attrMap[id]) {

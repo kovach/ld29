@@ -103,6 +103,8 @@ clickHandler = function(ev) {
         World.move();
       }
       console.log('click: ', mobj);
+      console.log('r: ', mobj.radius);
+      console.log('s: ', mobj.scale.x);
     } else {
       console.log('ERROR');
     }
