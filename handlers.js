@@ -10,14 +10,16 @@ resizeHandler = function (camera, renderer) {
 
 
 keyPressHandler = function(ev) {
-  var c = String.fromCharCode(ev.keyCode);
-  if (debug)
+  var c = String.fromCharCode(ev.which);
+  if (debug) {
     console.log('char: ', c);
+  }
   keyHandle(c);
 }
 keyDownHandler = function(ev) {
-  if (debug)
+  if (debug) {
     console.log('key: ', ev.keyCode);
+  }
   var k = '';
   switch (ev.keyCode) {
     case 8:
@@ -47,6 +49,7 @@ keyDownHandler = function(ev) {
 
 // Game Keybindings
 keyHandle = function(key) {
+
   switch (key) {
     case 'w':
       World.move();
@@ -75,7 +78,8 @@ keyHandle = function(key) {
     case 'k':
       registerLook(vec(blobs[1]));
       break;
-    case 'l':
+    default:
+      break;
   }
 }
 
